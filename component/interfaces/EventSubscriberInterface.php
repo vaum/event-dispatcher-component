@@ -1,6 +1,6 @@
 <?php
 
-namespace interfaces;
+namespace EventDispatcherComponent\interfaces;
 
 
 interface EventSubscriberInterface
