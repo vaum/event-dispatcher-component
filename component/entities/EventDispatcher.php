@@ -22,72 +22,20 @@ class EventDispatcher implements EDI
     /**
      * @param object|string $event
      * @param string|null $eventName
-     * @return string
      */
-    public function dispatch($event, string $eventName = null) : string
+    public function dispatch($event, string $eventName = null)
     {
-        $eventName = $eventName ?? \get_class($event);
-        $result = "";
-
-        $listeners = $this->getListeners($eventName);
-
-        if ($listeners) {
-            $this->callListeners($listeners, $eventName, $event);
+        if (null !== $event && is_string($event) && array_key_exists($event, $this->listeners)) {
+            return  var_dump($this->listeners[$event]);
+        } else if (null !== $eventName && array_key_exists($eventName, $this->listeners)) {
+            return var_dump($this->listeners[$eventName]);
         }
 
-        return "\t" . implode("\n\t", $result);
-    }
-
-    public function getListeners(string $eventName = null)
-    {
-        if (null === $eventName) {
-            return [];
-        }
-
-        if (empty($this->listeners[$eventName])) {
-            return [];
-        }
-
-        return $this->listeners;
-    }
-
-    protected function callListeners(iterable $listeners, string $eventName, object $event)
-    {
-        foreach ($listeners as $listener) {
-            $listener($event, $eventName, $this);
-        }
+        return "\t" . " No such event!";
     }
 
     public function addListener(string $eventName, $listener)
     {
         $this->listeners[$eventName][] = $listener;
-    }
-
-    public function addSubscriber(EventSubscriberInterface $subscriber)
-    {
-        foreach ($subscriber->getSubscribedEvents() as $eventName => $params) {
-            if (\is_string($params)) {
-                $this->addListener($eventName, [$subscriber, $params]);
-            } elseif (\is_string($params[0])) {
-                $this->addListener($eventName, [$subscriber, $params[0]], isset($params[1]) ? $params[1] : 0);
-            } else {
-                foreach ($params as $listener) {
-                    $this->addListener($eventName, [$subscriber, $listener[0]], isset($listener[1]) ? $listener[1] : 0);
-                }
-            }
-        }
-    }
-
-    public function removeSubscriber(EventSubscriberInterface $subscriber)
-    {
-        foreach ($subscriber->getSubscribedEvents() as $eventName => $params) {
-            if (\is_array($params) && \is_array($params[0])) {
-                foreach ($params as $listener) {
-                    $this->removeListener($eventName, [$subscriber, $listener[0]]);
-                }
-            } else {
-                $this->removeListener($eventName, [$subscriber, \is_string($params) ? $params : $params[0]]);
-            }
-        }
     }
 }

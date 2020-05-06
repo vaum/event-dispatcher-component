@@ -1,28 +1,27 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
+use EventDispatcherComponent\entities\BalanceUpdateSubscriber;
 use EventDispatcherComponent\entities\EventDispatcher;
+use EventDispatcherComponent\entities\TransactionSubscriber;
+
 
 $dispatcher = new EventDispatcher();
 
-
 $balanceUpdateSubscriber = new BalanceUpdateSubscriber();
-$dispatcher->subscribe("user.notify", $balanceUpdateSubscriber);
+$dispatcher->subscribe('', $balanceUpdateSubscriber);
 
 $transactionSubscriber = new TransactionSubscriber();
-$dispatcher->subscribe('balance.credit', $transactionSubscriber);
-$dispatcher->subscribe('bonuses.calculate', $transactionSubscriber);
-$dispatcher->subscribe('email.sent', $transactionSubscriber);
+$dispatcher->subscribe('', $transactionSubscriber);
 
-//$dispatcher->addListener('baz.action', array($listener, 'onFooAction'));
-//$dispatcher->addListener('foo.action', function() {
-//    echo __FUNCTION__;
-//    echo "<br>";
-//});
+echo "<h2>START</h2> \n";
+
+echo $dispatcher->dispatch('balance.credit');
+echo $dispatcher->dispatch('user.notify');
+echo $dispatcher->dispatch('bonuses.calculate');
+echo $dispatcher->dispatch('balance.credit');
+echo $dispatcher->dispatch('user.notify');
+echo $dispatcher->dispatch('email.send');
 
 
-echo "<h2>START</h2>";
-
-$dispatcher->dispatch('foo.action');
-
-echo "<h2>END</h2>";
+echo "\n <h2>END</h2> \n";

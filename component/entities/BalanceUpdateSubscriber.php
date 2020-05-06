@@ -14,7 +14,13 @@ class BalanceUpdateSubscriber implements ESI
     public static function getSubscribedEvents() : array
     {
         return [
-            'user.notify' => 'notifyUser'
+            'user.notify' => 'onNotifyUser'
         ];
+    }
+
+    public function onNotifyUser()
+    {
+        echo __CLASS__ . '/' . __METHOD__;
+        echo "<br>";
     }
 }

@@ -13,9 +13,27 @@ class TransactionSubscriber implements ESI
     public static function getSubscribedEvents() : array
     {
         return [
-            'balance.credit' => 'creditBalance',
-            'bonuses.calculate' => 'calculateBonus',
-            'email.sent' => 'sendEmail',
+            'balance.credit' => 'onCreditBalance',
+            'bonuses.calculate' => 'onCalculateBonus',
+            'email.send' => 'onSendEmail',
         ];
+    }
+
+    public function onCreditBalance()
+    {
+        echo __CLASS__ . '/' . __METHOD__;
+        echo "<br>";
+    }
+
+    public function onCalculateBonus()
+    {
+        echo __CLASS__ . '/' . __METHOD__;
+        echo "<br>";
+    }
+
+    public function onSendEmail()
+    {
+        echo __CLASS__ . '/' . __METHOD__;
+        echo "<br>";
     }
 }

@@ -15,8 +15,7 @@ interface EventDispatcherInterface
     /**
      * @param object|string $event
      * @param string|null $eventName
-     * @return string
      */
-    public function dispatch($event, string $eventName = null) : string ;
+    public function dispatch($event, string $eventName = null);
 
 }
