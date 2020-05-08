@@ -3,39 +3,69 @@
 
 namespace EventDispatcherComponent\entities;
 
+use EventDispatcherComponent\events\Event;
 use EventDispatcherComponent\interfaces\EventDispatcherInterface as EDI;
 use EventDispatcherComponent\interfaces\EventSubscriberInterface;
 
+/**
+ * Class EventDispatcher
+ * @package EventDispatcherComponent\entities
+ */
 class EventDispatcher implements EDI
 {
-    private array $listeners = [];
+    private static array $listeners = [];
 
-    public function subscribe($event, EventSubscriberInterface $subscriber)
+
+    public static function dispatch($event)
     {
-        foreach ($subscriber->getSubscribedEvents() as $eventName => $params) {
-            if (\is_string($params)) {
-                $this->addListener($eventName, [$subscriber, $params]);
+        if ($event::NAME && self::$listeners) {
+            $listeners = self::getListeners($event::NAME);
+            self::callListeners($event::NAME, $event);
+            return $event;
+        }
+
+        echo "\t" . " No such event!";
+        return;
+    }
+
+    public static function subscribe($event, EventSubscriberInterface $subscriber)
+    {
+        foreach ($subscriber->getSubscribedEvents() as $eventName => $eventAction) {
+
+            if (\is_string($eventAction)) {
+                self::addListener($eventName, $subscriber, $eventAction);
             }
         }
     }
 
-    /**
-     * @param object|string $event
-     * @param string|null $eventName
-     */
-    public function dispatch($event, string $eventName = null)
+    public static function addListener(string $eventName, $subscriber, $eventAction)
     {
-        if (null !== $event && is_string($event) && array_key_exists($event, $this->listeners)) {
-            return  var_dump($this->listeners[$event]);
-        } else if (null !== $eventName && array_key_exists($eventName, $this->listeners)) {
-            return var_dump($this->listeners[$eventName]);
-        }
-
-        return "\t" . " No such event!";
+        $listener = new Listener();
+        $listener->name = $eventName;
+        $listener->eventAction = $eventAction;
+        $listener->subscriber = $subscriber;
+        self::$listeners[$eventName] = $listener;
     }
 
-    public function addListener(string $eventName, $listener)
+    public static function getListeners(string $eventName = null)
     {
-        $this->listeners[$eventName][] = $listener;
+        if (null !== $eventName) {
+            if (empty(self::$listeners[$eventName])) {
+                return [];
+            }
+
+            return self::$listeners[$eventName];
+        }
+    }
+
+
+    protected static function callListeners(string $eventName)
+    {
+        foreach (self::$listeners as $listener) {
+            /** @var Listener $listener */
+            $eventAction = $listener->eventAction;
+            $subscriber = $listener->subscriber;
+            $subscriber::$eventAction($eventName);
+        }
     }
 }

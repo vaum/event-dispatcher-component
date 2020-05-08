@@ -3,21 +3,21 @@
 namespace EventDispatcherComponent\events;
 
 
-use EventDispatcherComponent\entities\Bonus;
+use EventDispatcherComponent\entities\Balance;
 
 class BalanceUpdatedEvent
 {
     public const NAME = 'bonus.updated';
 
-    protected $bonus;
+    protected Balance $balance;
 
-    public function __construct(Bonus $bonus)
+    public function __construct(Balance $balance)
     {
-        $this->bonus = $bonus;
+        $this->balance = $balance;
     }
 
-    public function getBonus()
+    public function getBalance()
     {
-        return $this->bonus;
+        return $this->balance;
     }
 }

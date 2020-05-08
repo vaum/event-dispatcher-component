@@ -3,7 +3,9 @@
 namespace EventDispatcherComponent\entities;
 
 
+use EventDispatcherComponent\events\BalanceUpdatedEvent;
 use EventDispatcherComponent\interfaces\EventSubscriberInterface as ESI;
+use ReflectionClass;
 
 
 class BalanceUpdateSubscriber implements ESI
@@ -14,13 +16,12 @@ class BalanceUpdateSubscriber implements ESI
     public static function getSubscribedEvents() : array
     {
         return [
-            'user.notify' => 'onNotifyUser'
+            BalanceUpdatedEvent::NAME => 'notifyUser'
         ];
     }
 
-    public function onNotifyUser()
+    public static function notifyUser()
     {
-        echo __CLASS__ . '/' . __METHOD__;
-        echo "<br>";
+        echo "-->". "\t" . __METHOD__  . "\n";
     }
 }

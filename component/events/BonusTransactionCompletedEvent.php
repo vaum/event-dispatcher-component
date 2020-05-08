@@ -9,7 +9,7 @@ class BonusTransactionCompletedEvent
 {
     public const NAME = 'bonus.transaction.completed';
 
-    protected $bonusTransaction;
+    protected BonusTransaction $bonusTransaction;
 
     public function __construct(BonusTransaction $bonusTransaction)
     {

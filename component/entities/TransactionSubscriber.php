@@ -2,6 +2,7 @@
 
 namespace EventDispatcherComponent\entities;
 
+use EventDispatcherComponent\events\TransactionCompletedEvent;
 use EventDispatcherComponent\interfaces\EventSubscriberInterface as ESI;
 
 
@@ -13,27 +14,34 @@ class TransactionSubscriber implements ESI
     public static function getSubscribedEvents() : array
     {
         return [
-            'balance.credit' => 'onCreditBalance',
-            'bonuses.calculate' => 'onCalculateBonus',
-            'email.send' => 'onSendEmail',
+            TransactionCompletedEvent::NAME => 'transactionCompleted',
         ];
     }
 
-    public function onCreditBalance()
+    public static function transactionCompleted()
     {
-        echo __CLASS__ . '/' . __METHOD__;
-        echo "<br>";
+        echo "-->". "\t" . __METHOD__  . "\n";
+        self::creditBalance();
+        self::calculateBonus();
+        self::sendEmail();
+        echo "Event Completed!";
     }
 
-    public function onCalculateBonus()
+    public static function creditBalance()
     {
-        echo __CLASS__ . '/' . __METHOD__;
-        echo "<br>";
+        echo "-->". "\t" . __METHOD__  . "\n";
+        echo "-->". "\t" . BalanceUpdateSubscriber::notifyUser();
     }
 
-    public function onSendEmail()
+    public static function calculateBonus()
     {
-        echo __CLASS__ . '/' . __METHOD__;
-        echo "<br>";
+        echo "-->". "\t" . __METHOD__  . "\n";
+        echo "-->". "\t" .  self::creditBalance();
+
+    }
+
+    public static function sendEmail()
+    {
+        echo "-->". "\t" . __METHOD__  . "\n";
     }
 }

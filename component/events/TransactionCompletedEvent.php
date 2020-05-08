@@ -9,7 +9,7 @@ class TransactionCompletedEvent
 {
     public const NAME = 'transaction.completed';
 
-    protected $transaction;
+    protected Transaction $transaction;
 
     public function __construct(Transaction $transaction)
     {
