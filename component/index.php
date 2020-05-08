@@ -11,15 +11,6 @@ use EventDispatcherComponent\events\BalanceUpdatedEvent;
 use EventDispatcherComponent\entities\Balance;
 use EventDispatcherComponent\events\BonusTransactionCompletedEvent;
 
-
-//$dispatcher = new EventDispatcher();
-//
-//$balanceUpdateSubscriber = new BalanceUpdateSubscriber();
-//$dispatcher->subscribe('', $balanceUpdateSubscriber);
-//
-//$transactionSubscriber = new TransactionSubscriber();
-//$dispatcher->subscribe('', $transactionSubscriber);
-
 $transaction = new Transaction();
 $balance = new Balance();
 $bonusTransaction = new BonusTransaction();
@@ -32,8 +23,6 @@ $balanceUpdateSubscriber = new BalanceUpdateSubscriber();
 $transactionSubscriber = new TransactionSubscriber();
 
 EventDispatcher::subscribe($transactionCompletedEvent, $transactionSubscriber);
-//EventDispatcher::subscribe($transactionCompletedEvent, $balanceUpdateSubscriber);
-
 
 echo "<h2>START</h2> \n";
 

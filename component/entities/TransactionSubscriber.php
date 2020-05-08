@@ -20,28 +20,29 @@ class TransactionSubscriber implements ESI
 
     public static function transactionCompleted()
     {
-        echo "-->". "\t" . __METHOD__  . "\n";
-        self::creditBalance();
-        self::calculateBonus();
-        self::sendEmail();
-        echo "Event Completed!";
+        echo __FUNCTION__
+            . ":" . "\n"
+            . '1) ' . self::creditBalance()
+            . '2) ' . self::calculateBonus()
+            . '3) ' . self::sendEmail();
+        return;
     }
 
     public static function creditBalance()
     {
-        echo "-->". "\t" . __METHOD__  . "\n";
-        echo "-->". "\t" . BalanceUpdateSubscriber::notifyUser();
+        return  __METHOD__ . "\n"
+            . BalanceUpdateSubscriber::notifyUser();
     }
 
     public static function calculateBonus()
     {
-        echo "-->". "\t" . __METHOD__  . "\n";
-        echo "-->". "\t" .  self::creditBalance();
+        return __METHOD__ . "\n"
+            . "\t"   .  self::creditBalance();
 
     }
 
     public static function sendEmail()
     {
-        echo "-->". "\t" . __METHOD__  . "\n";
+        return __METHOD__  . "\n";
     }
 }

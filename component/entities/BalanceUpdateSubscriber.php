@@ -22,6 +22,6 @@ class BalanceUpdateSubscriber implements ESI
 
     public static function notifyUser()
     {
-        echo "-->". "\t" . __METHOD__  . "\n";
+        return "\t -> " . __METHOD__  . "\n";
     }
 }

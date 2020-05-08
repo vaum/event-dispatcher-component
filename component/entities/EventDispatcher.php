@@ -19,12 +19,12 @@ class EventDispatcher implements EDI
     public static function dispatch($event)
     {
         if ($event::NAME && self::$listeners) {
-            $listeners = self::getListeners($event::NAME);
-            self::callListeners($event::NAME, $event);
-            return $event;
+            $listener = self::getListener($event::NAME);
+            self::callListener($event::NAME, $listener);
+            return;
         }
 
-        echo "\t" . " No such event!";
+        echo "No such event!";
         return;
     }
 
@@ -47,7 +47,7 @@ class EventDispatcher implements EDI
         self::$listeners[$eventName] = $listener;
     }
 
-    public static function getListeners(string $eventName = null)
+    public static function getListener(string $eventName = null)
     {
         if (null !== $eventName) {
             if (empty(self::$listeners[$eventName])) {
@@ -59,13 +59,11 @@ class EventDispatcher implements EDI
     }
 
 
-    protected static function callListeners(string $eventName)
+    protected static function callListener(string $eventName, $listener)
     {
-        foreach (self::$listeners as $listener) {
-            /** @var Listener $listener */
-            $eventAction = $listener->eventAction;
-            $subscriber = $listener->subscriber;
-            $subscriber::$eventAction($eventName);
-        }
+        /** @var Listener $listener */
+        $eventAction = $listener->eventAction;
+        $subscriber = $listener->subscriber;
+        $subscriber::$eventAction($eventName);
     }
 }
